@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Luke Skywalker"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black" /> <!-- Text color for name -->
+
+    <TextView
+        android:id="@+id/birth_year"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Birth Year: 19BBY"
+        android:textSize="14sp"
+        android:textColor="@color/black" /> <!-- Text color for birth year -->
+
+    <TextView
+        android:id="@+id/gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gender: Male"
+        android:textSize="14sp"
+        android:textColor="@color/black" /> <!-- Text color for gender -->
+
+    <TextView
+        android:id="@+id/height"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Height: 172cm"
+        android:textSize="14sp"
+        android:textColor="@color/black" /> <!-- Text color for height -->
+
+</LinearLayout>

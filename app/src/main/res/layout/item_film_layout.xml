@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"> <!-- Custom background for film item -->
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="A New Hope"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/black" /> <!-- Text color for title -->
+
+    <TextView
+        android:id="@+id/director"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Director: George Lucas"
+        android:textSize="14sp"
+        android:textColor="@color/black" /> <!-- Text color for director -->
+
+    <TextView
+        android:id="@+id/producer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Producer: Gary Kurtz, Rick McCallum"
+        android:textSize="14sp"
+        android:textColor="@color/black" /> <!-- Text color for producer -->
+
+    <TextView
+        android:id="@+id/release_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Release Date: 1977-05-25"
+        android:textSize="14sp"
+        android:textColor="@color/black" /> <!-- Text color for release date -->
+
+    <TextView
+        android:id="@+id/opening_crawl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="It is a period of civil war..."
+        android:textSize="14sp"
+        android:ellipsize="end"
+        android:maxLines="4"
+        android:textColor="@color/black" /> <!-- Text color for opening crawl -->
+
+</LinearLayout>
