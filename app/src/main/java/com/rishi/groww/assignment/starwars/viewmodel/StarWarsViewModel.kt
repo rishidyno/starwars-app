@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.rishi.groww.assignment.starwars.model.database.StarWarsDatabaseRepository
 import com.rishi.groww.assignment.starwars.model.entity.Character
-import com.rishi.groww.assignment.starwars.model.repository.AppRepository
+import com.rishi.groww.assignment.starwars.model.network.StarWarsNetworkRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,17 +13,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StarWarsViewModel @Inject constructor(
-    private val appRepository: AppRepository,
+    private val appRepository: StarWarsNetworkRepository,
     private val starWarsRepository: StarWarsDatabaseRepository
 ) : ViewModel() {
 
-    private var _characters = MutableLiveData<MutableList<Character>>()
-    val character: LiveData<MutableList<Character>> get() = _characters
+    private var _characters = MutableLiveData<Character>()
+    val character: LiveData<Character> get() = _characters
     suspend fun getAllCharacters() {
 //        _isLoading.postValue(true)
         withContext(Dispatchers.IO) {
             // Fetch messages from the repository
-            val allMessages = appRepository.getAllCharacters()
+            val allMessages:Result<Character?> = appRepository.getAllCharacters()
             allMessages.getOrNull()?.let {
                 // Update messages LiveData with the fetched messages
                 _characters.postValue(it)

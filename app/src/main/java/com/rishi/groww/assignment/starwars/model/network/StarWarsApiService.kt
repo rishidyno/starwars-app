@@ -10,8 +10,12 @@ import retrofit2.http.Query
 interface StarWarsApiService {
 
     @GET("people")
-    suspend fun getAllCharacters(): Response<MutableList<Character>>
+    suspend fun getAllCharacters(
+        @Query("page") page:Int
+    ): Response<Character>
 
     @GET("films/{id}/")
-    suspend fun getFilmById(@Path("id") filmId: Int): Response<MutableList<Film>>
+    suspend fun getFilmById(
+        @Path("id") filmId: Int)
+    : Response<Film>
 }

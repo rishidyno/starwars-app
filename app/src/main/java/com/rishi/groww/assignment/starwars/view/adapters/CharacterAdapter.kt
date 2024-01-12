@@ -1,4 +1,4 @@
-package com.rishi.groww.assignment.starwars.view.adapter
+package com.rishi.groww.assignment.starwars.view.adapters
 
 import android.view.View
 import android.view.ViewGroup

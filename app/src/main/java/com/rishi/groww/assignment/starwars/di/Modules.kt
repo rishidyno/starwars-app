@@ -1,13 +1,18 @@
 package com.rishi.groww.assignment.starwars.di
 
 import android.content.Context
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.room.Room
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import com.rishi.groww.assignment.starwars.model.database.StarWarsDao
 import com.rishi.groww.assignment.starwars.model.database.StarWarsDatabaseRepository
 import com.rishi.groww.assignment.starwars.model.database.StarWarsRoomDatabase
+import com.rishi.groww.assignment.starwars.model.entity.CharacterEntity
+import com.rishi.groww.assignment.starwars.model.mediators.StarWarsRemoteMediator
 import com.rishi.groww.assignment.starwars.model.network.StarWarsApiService
-import com.rishi.groww.assignment.starwars.model.repository.AppRepository
+import com.rishi.groww.assignment.starwars.model.network.StarWarsNetworkRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -16,14 +21,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
-import okhttp3.Dispatcher
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
+@OptIn(ExperimentalPagingApi::class)
 @Module
 @InstallIn(SingletonComponent::class)
 object Modules {
@@ -54,32 +58,22 @@ object Modules {
 
     @Provides
     @Singleton
-    fun provideStarWarsApiService(retrofit: Retrofit):StarWarsApiService{
+    fun provideStarWarsApiService(retrofit: Retrofit): StarWarsApiService {
         return retrofit.create(StarWarsApiService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideAppRepository(starWarsApiService: StarWarsApiService): AppRepository{
-        return AppRepository(starWarsApiService, Dispatchers.IO)
+    fun provideStarWarsNetworkRepository(starWarsApiService: StarWarsApiService): StarWarsNetworkRepository {
+        return StarWarsNetworkRepository(starWarsApiService, Dispatchers.IO)
     }
 
     @Provides
     @Singleton
     fun provideBranchInternationalDao(starWarsRoomDatabase: StarWarsRoomDatabase): StarWarsDao {
-        return starWarsRoomDatabase.starWarsDao()
+        return starWarsRoomDatabase.starWarsDao
     }
 
-    @Provides
-    @Singleton
-    fun provideStarWarsDatabase(@ApplicationContext applicationContext: Context): StarWarsRoomDatabase {
-        return Room.databaseBuilder(
-            applicationContext,
-            StarWarsRoomDatabase::class.java,
-            "StarWarsDatabase"
-        )
-            .build()
-    }
 
     @Provides
     @Singleton
@@ -87,4 +81,32 @@ object Modules {
         return StarWarsDatabaseRepository(starWarsDao)
     }
 
+    @Provides
+    @Singleton
+    fun provideStarWarsDataBase(@ApplicationContext applicationContext: Context): StarWarsRoomDatabase {
+        return Room.databaseBuilder(
+            applicationContext,
+            StarWarsRoomDatabase::class.java,
+            "star_wars"
+        )
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCharacterPager(
+        starWarsDatabaseRepository: StarWarsDatabaseRepository,
+        starWarsNetworkRepository: StarWarsNetworkRepository
+    ): Pager<Int, CharacterEntity> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            remoteMediator = StarWarsRemoteMediator(
+                starWarsNetworkRepository = starWarsNetworkRepository,
+                starWarsDatabaseRepository = starWarsDatabaseRepository
+            ),
+            pagingSourceFactory = {
+                starWarsDatabaseRepository.pagingSource
+            }
+        )
+    }
 }

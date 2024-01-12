@@ -1,29 +1,25 @@
 package com.rishi.groww.assignment.starwars.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.rishi.groww.assignment.starwars.R
 import com.rishi.groww.assignment.starwars.databinding.FragmentCharactersBinding
 import com.rishi.groww.assignment.starwars.model.database.StarWarsDatabaseRepository
-import com.rishi.groww.assignment.starwars.model.repository.AppRepository
+import com.rishi.groww.assignment.starwars.model.network.StarWarsNetworkRepository
 import com.rishi.groww.assignment.starwars.viewmodel.StarWarsViewModel
-import com.rishi.groww.assignment.starwars.viewmodel.StarWarsViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 @AndroidEntryPoint
 class CharactersFragment : Fragment() {
 
@@ -36,14 +32,12 @@ class CharactersFragment : Fragment() {
     private lateinit var navController: NavController
 
     @Inject
-    lateinit var appRepository: AppRepository
+    lateinit var appRepository: StarWarsNetworkRepository
 
     @Inject
     lateinit var starWarsDatabaseRepository: StarWarsDatabaseRepository
 
-    private val starWarsViewModel: StarWarsViewModel by viewModels {
-        StarWarsViewModelFactory(appRepository,starWarsDatabaseRepository)
-    }
+    private lateinit var starWarsViewModel: StarWarsViewModel
 
 
     override fun onCreateView(
@@ -52,8 +46,9 @@ class CharactersFragment : Fragment() {
     ): View? {
 
         _fragmentCharactersBinding = FragmentCharactersBinding.inflate(inflater, container, false)
-        return fragmentCharactersBinding.root
+        starWarsViewModel= ViewModelProvider(this)[StarWarsViewModel::class.java]
 
+        return fragmentCharactersBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,8 +58,9 @@ class CharactersFragment : Fragment() {
 
         getAllCharacters()
 
-        starWarsViewModel.character.observe(viewLifecycleOwner){ characterList ->
-            Log.i("character", characterList.toString())
+        starWarsViewModel.character.observe(viewLifecycleOwner) { charactersList ->
+            val character = charactersList.results
+            Timber.tag("character").i(character.toString())
         }
 
         fragmentCharactersBinding.tv.setOnClickListener {

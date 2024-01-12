@@ -4,4 +4,6 @@ import javax.inject.Inject
 
 class StarWarsDatabaseRepository (private val starWarsDao: StarWarsDao) {
 
+    val pagingSource = starWarsDao.pagingSource()
+
 }

@@ -3,11 +3,11 @@ package com.rishi.groww.assignment.starwars.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.rishi.groww.assignment.starwars.model.database.StarWarsDatabaseRepository
-import com.rishi.groww.assignment.starwars.model.repository.AppRepository
+import com.rishi.groww.assignment.starwars.model.network.StarWarsNetworkRepository
 import javax.inject.Inject
 
 class StarWarsViewModelFactory @Inject constructor(
-    private val appRepository: AppRepository,
+    private val appRepository: StarWarsNetworkRepository,
     private val starWarsDatabaseRepository: StarWarsDatabaseRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
