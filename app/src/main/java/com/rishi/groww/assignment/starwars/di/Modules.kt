@@ -2,17 +2,14 @@ package com.rishi.groww.assignment.starwars.di
 
 import android.content.Context
 import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.room.Room
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import com.rishi.groww.assignment.starwars.model.database.StarWarsDao
 import com.rishi.groww.assignment.starwars.model.database.StarWarsDatabaseRepository
 import com.rishi.groww.assignment.starwars.model.database.StarWarsRoomDatabase
-import com.rishi.groww.assignment.starwars.model.entity.CharacterEntity
-import com.rishi.groww.assignment.starwars.model.mediators.StarWarsRemoteMediator
 import com.rishi.groww.assignment.starwars.model.network.StarWarsApiService
 import com.rishi.groww.assignment.starwars.model.network.StarWarsNetworkRepository
+import com.rishi.groww.assignment.starwars.model.repository.StarWarsRepository
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -94,19 +91,7 @@ object Modules {
 
     @Provides
     @Singleton
-    fun provideCharacterPager(
-        starWarsDatabaseRepository: StarWarsDatabaseRepository,
-        starWarsNetworkRepository: StarWarsNetworkRepository
-    ): Pager<Int, CharacterEntity> {
-        return Pager(
-            config = PagingConfig(pageSize = 10),
-            remoteMediator = StarWarsRemoteMediator(
-                starWarsNetworkRepository = starWarsNetworkRepository,
-                starWarsDatabaseRepository = starWarsDatabaseRepository
-            ),
-            pagingSourceFactory = {
-                starWarsDatabaseRepository.pagingSource
-            }
-        )
+    fun provideStarWarsRepository(starWarsNetworkRepository: StarWarsNetworkRepository) : StarWarsRepository{
+        return StarWarsRepository(starWarsNetworkRepository)
     }
 }

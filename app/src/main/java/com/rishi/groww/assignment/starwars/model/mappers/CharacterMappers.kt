@@ -1,5 +1,6 @@
 package com.rishi.groww.assignment.starwars.model.mappers
 
+import com.rishi.groww.assignment.starwars.model.entity.CharacterResponse
 import com.rishi.groww.assignment.starwars.model.entity.CharacterEntity
 import com.rishi.groww.assignment.starwars.model.entity.CharacterUi
 import com.rishi.groww.assignment.starwars.model.entity.ResultCharacters
@@ -17,7 +18,7 @@ fun ResultCharacters.toCharacterEntity(): CharacterEntity {
         hairColor = hairColor,
         homeWorld = homeWorld,
         mass = mass,
-        films = films?.joinToString("") { it[it.length - 1].toString() },
+        films = films?.joinToString("") { it[it.length - 2].toString() },
         skinColor = skinColor
     )
 }
@@ -38,4 +39,10 @@ fun CharacterEntity.roCharacterUi(): CharacterUi {
         skinColor = skinColor,
         films = films
     )
+}
+
+fun CharacterResponse.fromResultCharactersListToCharacterEntityList(): List<CharacterEntity> {
+    return this.results.map { resultCharacters ->
+        resultCharacters.toCharacterEntity()
+    }
 }

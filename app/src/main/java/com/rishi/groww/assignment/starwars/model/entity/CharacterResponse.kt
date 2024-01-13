@@ -27,7 +27,7 @@ data class ResultCharacters(
 //    val vehicles: List<String>?
 )
 
-data class Character(
+data class CharacterResponse(
     val count: Int,
     val next: String?,
     val previous: String?,

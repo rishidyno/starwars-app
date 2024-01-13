@@ -1,8 +1,7 @@
 package com.rishi.groww.assignment.starwars.model.network
 
 import com.rishi.groww.assignment.starwars.exceptions.NoInternetException
-import com.rishi.groww.assignment.starwars.model.entity.Character
-import com.rishi.groww.assignment.starwars.model.network.StarWarsApiService
+import com.rishi.groww.assignment.starwars.model.entity.CharacterResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -13,11 +12,11 @@ class StarWarsNetworkRepository @Inject constructor(
     private val dispatcher: CoroutineDispatcher
     ){
 
-    suspend fun getAllCharacters(): Result<Character?> {
+    suspend fun getAllCharacters(pageNumber:Int): Result<CharacterResponse> {
         return withContext(dispatcher) {
             return@withContext try {
-                val response = starWarsApiService.getAllCharacters(4)
-                val charactersResponse: Character? = response.body()
+                val response = starWarsApiService.getAllCharacters(pageNumber)
+                val charactersResponse: CharacterResponse = response.body()!!
 
                 Timber.i("response is %s",response.isSuccessful)
                 if (response.isSuccessful) {

@@ -1,6 +1,6 @@
 package com.rishi.groww.assignment.starwars.model.network
 
-import com.rishi.groww.assignment.starwars.model.entity.Character
+import com.rishi.groww.assignment.starwars.model.entity.CharacterResponse
 import com.rishi.groww.assignment.starwars.model.entity.Film
 import retrofit2.Response
 import retrofit2.http.GET
@@ -12,7 +12,7 @@ interface StarWarsApiService {
     @GET("people")
     suspend fun getAllCharacters(
         @Query("page") page:Int
-    ): Response<Character>
+    ): Response<CharacterResponse>
 
     @GET("films/{id}/")
     suspend fun getFilmById(
