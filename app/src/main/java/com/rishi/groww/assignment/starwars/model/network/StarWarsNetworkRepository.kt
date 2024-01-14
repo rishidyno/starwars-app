@@ -15,7 +15,7 @@ class StarWarsNetworkRepository @Inject constructor(
     suspend fun getAllCharacters(pageNumber:Int): Result<CharacterResponse> {
         return withContext(dispatcher) {
             return@withContext try {
-                val response = starWarsApiService.getAllCharacters(pageNumber)
+                val response = starWarsApiService.getAllStarWarsCharacters(pageNumber)
                 val charactersResponse: CharacterResponse = response.body()!!
 
                 Timber.i("response is %s",response.isSuccessful)

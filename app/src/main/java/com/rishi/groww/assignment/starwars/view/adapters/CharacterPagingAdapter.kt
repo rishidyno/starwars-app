@@ -10,25 +10,27 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.rishi.groww.assignment.starwars.databinding.ItemCharacterLayoutBinding
+import com.rishi.groww.assignment.starwars.model.entity.CharacterEntity
 import com.rishi.groww.assignment.starwars.model.entity.CharacterResponse
 import com.rishi.groww.assignment.starwars.model.entity.ResultCharacters
+import timber.log.Timber
 
 class CharacterPagingAdapter :
-    PagingDataAdapter<ResultCharacters, CharacterPagingAdapter.CharactersViewHolder>(DIFF_UTIL) {
+    PagingDataAdapter<CharacterEntity, CharacterPagingAdapter.CharactersViewHolder>(DIFF_UTIL) {
     companion object {
-        val DIFF_UTIL = object : DiffUtil.ItemCallback<ResultCharacters>() {
+        val DIFF_UTIL = object : DiffUtil.ItemCallback<CharacterEntity>() {
             override fun areItemsTheSame(
-                oldItem: ResultCharacters,
-                newItem: ResultCharacters
+                oldItem: CharacterEntity,
+                newItem: CharacterEntity
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: ResultCharacters,
-                newItem: ResultCharacters
+                oldItem: CharacterEntity,
+                newItem: CharacterEntity
             ): Boolean {
-                return oldItem.url == newItem.url
+                return oldItem.id == newItem.id
             }
         }
     }
@@ -55,6 +57,9 @@ class CharacterPagingAdapter :
         holder.itemCharacterLayoutBinding.created.text = character.created
         holder.itemCharacterLayoutBinding.edited.text = character.edited
         holder.itemCharacterLayoutBinding.height.text = character.height
+        holder.itemCharacterLayoutBinding.mass.text = character.mass
+
+        Timber.i("hello baby", character.films.toString())
     }
 
     override fun onCreateViewHolder(

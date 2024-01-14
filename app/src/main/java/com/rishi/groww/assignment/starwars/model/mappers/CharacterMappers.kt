@@ -7,7 +7,7 @@ import com.rishi.groww.assignment.starwars.model.entity.ResultCharacters
 
 fun ResultCharacters.toCharacterEntity(): CharacterEntity {
     return CharacterEntity(
-        id = (url[url.length - 1]) - '0',
+        id = extractLastNumber(url)!!,
         name = name,
         birthYear = birthYear,
         height = height,
@@ -18,31 +18,31 @@ fun ResultCharacters.toCharacterEntity(): CharacterEntity {
         hairColor = hairColor,
         homeWorld = homeWorld,
         mass = mass,
-        films = films?.joinToString("") { it[it.length - 2].toString() },
+        films = films?.joinToString("") { it[it.length - 2].toString() }, // doing this because we only have 6 films in the backend database
         skinColor = skinColor
     )
 }
 
-fun CharacterEntity.roCharacterUi(): CharacterUi {
-    return CharacterUi(
-        id = id,
-        name = name,
-        birthYear = birthYear,
-        height = height,
-        gender = gender,
-        created = created,
-        edited = edited,
-        eyeColor = eyeColor,
-        hairColor = hairColor,
-        homeWorld = homeWorld,
-        mass = mass,
-        skinColor = skinColor,
-        films = films
-    )
+fun extractLastNumber(url: String): Int? {
+    val regex = "/(\\d+)/$".toRegex()
+    val matchResult = regex.find(url)
+    return matchResult?.groupValues?.get(1)?.toInt()
 }
 
-fun CharacterResponse.fromResultCharactersListToCharacterEntityList(): List<CharacterEntity> {
-    return this.results.map { resultCharacters ->
-        resultCharacters.toCharacterEntity()
-    }
-}
+//fun CharacterEntity.roCharacterUi(): CharacterUi {
+//    return CharacterUi(
+//        id = id,
+//        name = name,
+//        birthYear = birthYear,
+//        height = height,
+//        gender = gender,
+//        created = created,
+//        edited = edited,
+//        eyeColor = eyeColor,
+//        hairColor = hairColor,
+//        homeWorld = homeWorld,
+//        mass = mass,
+//        skinColor = skinColor,
+//        films = films
+//    )
+//}

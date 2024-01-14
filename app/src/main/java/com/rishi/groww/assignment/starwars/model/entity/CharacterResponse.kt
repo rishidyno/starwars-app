@@ -9,7 +9,6 @@ data class ResultCharacters(
     val edited: String,
     @Json(name = "eye_color")
     val eyeColor: String,
-    val films: List<String>?,
     val gender: String,
     @Json(name = "hair_color")
     val hairColor: String,
@@ -21,6 +20,7 @@ data class ResultCharacters(
     @Json(name = "skin_color")
     val skinColor: String,
     val url: String,
+    val films: List<String>?
 //    val species: List<String>?,
 //    @Json(name = "starships")
 //    val starShips: List<String>?,

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -20,6 +21,7 @@ import com.rishi.groww.assignment.starwars.viewmodel.StarWarsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -64,25 +66,31 @@ class CharactersFragment : Fragment() {
 
         navController = findNavController()
 
-        starWarsViewModel.character.observe(viewLifecycleOwner){
-            characterPagingAdapter.submitData(lifecycle,it)
-        }
+//        starWarsViewModel.character.observe(viewLifecycleOwner){
+//            characterPagingAdapter.submitData(lifecycle,it)
+//        }
+//
+//        characterPagingAdapter.addLoadStateListener {state->
+//            when(state.refresh){
+//                is LoadState.Loading -> {
+//                    fragmentCharactersBinding.characterProgressBar.visibility = View.VISIBLE
+//                }
+//                is LoadState.NotLoading -> {
+//                    fragmentCharactersBinding.characterProgressBar.visibility = View.GONE
+//                }
+//                is LoadState.Error->{
+//                    fragmentCharactersBinding.characterProgressBar.visibility = View.GONE
+//
+//                    view.let {
+//                        Snackbar.make(it, "Some error occurred", Snackbar.LENGTH_SHORT).show()
+//                    }
+//                }
+//            }
+//        }
 
-        characterPagingAdapter.addLoadStateListener {state->
-            when(state.refresh){
-                is LoadState.Loading -> {
-                    fragmentCharactersBinding.characterProgressBar.visibility = View.VISIBLE
-                }
-                is LoadState.NotLoading -> {
-                    fragmentCharactersBinding.characterProgressBar.visibility = View.GONE
-                }
-                is LoadState.Error->{
-                    fragmentCharactersBinding.characterProgressBar.visibility = View.GONE
-
-                    view.let {
-                        Snackbar.make(it, "Some error occurred", Snackbar.LENGTH_SHORT).show()
-                    }
-                }
+        viewLifecycleOwner.lifecycleScope.launch {
+            starWarsViewModel.pager.collectLatest {
+                characterPagingAdapter.submitData(it)
             }
         }
 

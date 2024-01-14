@@ -68,7 +68,7 @@ object Modules {
     @Provides
     @Singleton
     fun provideBranchInternationalDao(starWarsRoomDatabase: StarWarsRoomDatabase): StarWarsDao {
-        return starWarsRoomDatabase.starWarsDao
+        return starWarsRoomDatabase.starWarsDao()
     }
 
 
@@ -81,12 +81,7 @@ object Modules {
     @Provides
     @Singleton
     fun provideStarWarsDataBase(@ApplicationContext applicationContext: Context): StarWarsRoomDatabase {
-        return Room.databaseBuilder(
-            applicationContext,
-            StarWarsRoomDatabase::class.java,
-            "star_wars"
-        )
-            .build()
+        return StarWarsRoomDatabase.getDatabase(applicationContext)
     }
 
     @Provides

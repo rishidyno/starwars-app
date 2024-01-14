@@ -89,11 +89,11 @@ dependencies {
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
-    implementation ("androidx.room:room-paging:$roomVersion")
+    implementation("androidx.room:room-paging:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
 
     //Timber
-    implementation ("com.jakewharton.timber:timber:5.0.1")
+    implementation("com.jakewharton.timber:timber:5.0.1")
 
     // Testing Libraries
     testImplementation("junit:junit:4.13.2")
@@ -103,6 +103,8 @@ dependencies {
     // Paging 3
     val pagingVersion = "3.2.1"
     implementation("androidx.paging:paging-runtime-ktx:$pagingVersion")
-    implementation ("androidx.paging:paging-runtime-ktx:$pagingVersion")
     testImplementation("androidx.paging:paging-common-ktx:$pagingVersion")
+
+    // okhttp profiler
+    implementation ("com.localebro:okhttpprofiler:1.0.8")
 }

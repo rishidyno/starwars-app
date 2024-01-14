@@ -14,6 +14,12 @@ interface StarWarsApiService {
         @Query("page") page:Int
     ): Response<CharacterResponse>
 
+    @GET("people")
+    suspend fun getAllStarWarsCharacters(
+        @Query("page") page:Int
+    ): Response<CharacterResponse>
+
+
     @GET("films/{id}/")
     suspend fun getFilmById(
         @Path("id") filmId: Int)

@@ -10,7 +10,7 @@ import com.rishi.groww.assignment.starwars.model.entity.ResultCharacters
 import com.rishi.groww.assignment.starwars.model.network.StarWarsNetworkRepository
 import com.rishi.groww.assignment.starwars.model.paging.StarWarsPagingSource
 
-class StarWarsRepository(val starWarsNetworkRepository: StarWarsNetworkRepository) {
+class StarWarsRepository(private val starWarsNetworkRepository: StarWarsNetworkRepository) {
 
     fun getAllCharactersStream(): LiveData<PagingData<ResultCharacters>> = Pager(
         config = PagingConfig(
