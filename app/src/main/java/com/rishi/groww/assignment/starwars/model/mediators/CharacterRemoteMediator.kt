@@ -14,6 +14,7 @@ import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
 import java.io.InvalidObjectException
+import java.sql.Time
 import javax.inject.Inject
 
 
@@ -61,21 +62,17 @@ class StarWarsRemoteMediator @Inject constructor(
                     }
 
 
-
-                    val prevKey =
-                        if (characterDTO?.previous == null) null else extractLastNumber(characterDTO.previous)
-                    val nextKey =
-                        if (characterDTO?.next == null) null else extractLastNumber(characterDTO.next)
+                    val nextKey = extractLastNumber(characterDTO?.next)
+                    val prevKey = extractLastNumber(characterDTO?.previous)
 
                     val remoteKeyList = characterDTO?.results?.map {
-                        val id:Int = extractLastNumber(it.url)!!
+                        val id: Int = extractLastNumber(it.url)!!
                         CharacterRemoteKeys(
                             id = id,
                             nextKey = nextKey,
                             prevKey = prevKey
                         )
                     }
-
 
                     val characterEntities = characterDTO?.results?.map {
                         it.toCharacterEntity()
@@ -125,9 +122,16 @@ class StarWarsRemoteMediator @Inject constructor(
         }
     }
 
-    private fun extractLastNumber(url: String): Int? {
-        val regex = "/(\\d+)/$".toRegex()
+    private fun extractLastNumber(url: String?): Int? {
+        if (url.isNullOrBlank()) {
+            return null
+        }
+
+        val regex: Regex = if (url[url.length - 1] == '/') "/(\\d+)/$".toRegex() else "page=(\\d+)$".toRegex()
+
         val matchResult = regex.find(url)
+        val x: Int? = matchResult?.groupValues?.get(1)?.toIntOrNull()
+        Timber.i(x.toString())
         return matchResult?.groupValues?.get(1)?.toIntOrNull()
     }
 }
